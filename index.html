@@ -88,7 +88,7 @@
     backdrop-filter:blur(14px);
     -webkit-backdrop-filter:blur(14px);
     overflow:hidden;
-    min-height:clamp(360px,58vh,540px);
+    min-height:clamp(440px,74vh,660px);
     display:flex;flex-direction:column;
   }
 
@@ -105,10 +105,33 @@
     transition:width .08s linear;
   }
 
-  .slides{position:relative;flex:1 1 auto;}
+  .stage-header{
+    display:flex;align-items:center;gap:13px;
+    padding:clamp(13px,2.4vw,18px) clamp(24px,5vw,60px);
+    border-bottom:1px solid var(--border);
+    background:rgba(255,255,255,.025);
+    flex:0 0 auto;
+  }
+  .sh-badge{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:34px;height:34px;flex:0 0 auto;border-radius:9px;
+    background:var(--accent-soft);border:1px solid var(--border-strong);
+    color:var(--accent);font-size:1.15rem;
+  }
+  .sh-title{
+    font-family:var(--serif);font-weight:700;
+    font-size:clamp(1rem,2.5vw,1.45rem);line-height:1.15;
+    letter-spacing:-.01em;
+  }
+  .sh-sub{
+    color:var(--muted);font-size:clamp(.76rem,1.7vw,.95rem);
+    margin-top:2px;
+  }
+
+  .slides{position:relative;flex:1 1 auto;display:grid;}
   .slide{
-    position:absolute;inset:0;
-    padding:clamp(24px,5vw,60px);
+    grid-area:1 / 1;
+    padding:clamp(22px,4vw,46px) clamp(24px,5vw,60px);
     display:flex;flex-direction:column;justify-content:center;
     opacity:0;visibility:hidden;
     transform:translateY(14px) scale(.99);
@@ -157,14 +180,14 @@
 
   .slide-points{
     list-style:none;padding:0;
-    margin:clamp(22px,3.5vw,34px) 0 0;
-    display:flex;flex-direction:column;gap:clamp(14px,2vw,20px);
-    max-width:60ch;
+    margin:clamp(16px,2.8vw,26px) 0 0;
+    display:flex;flex-direction:column;gap:clamp(11px,1.7vw,16px);
+    max-width:62ch;
   }
   .slide-points li{
     position:relative;
     padding-left:34px;
-    font-size:clamp(1.02rem,2.3vw,1.32rem);
+    font-size:clamp(1rem,2.05vw,1.24rem);
     color:#dbe2f4;
     opacity:0;transform:translateY(10px);
     transition:opacity .55s ease, transform .55s ease;
@@ -351,6 +374,13 @@
       <div class="progress-track" role="presentation">
         <div class="progress-fill" id="progress"></div>
       </div>
+      <header class="stage-header">
+        <span class="sh-badge" aria-hidden="true">⚖</span>
+        <div class="sh-text">
+          <div class="sh-title">Umberto Terracini e la Nascita della Repubblica</div>
+          <div class="sh-sub">L'Assemblea Costituente e i valori della nostra Costituzione</div>
+        </div>
+      </header>
       <div class="slides" id="slides" aria-live="polite"></div>
     </main>
 
@@ -372,7 +402,7 @@
       <span class="spacer"></span>
 
       <div class="meta">
-        <span class="counter"><b id="curNum">01</b> / <span id="totNum">06</span></span>
+        <span class="counter"><b id="curNum">01</b> / <span id="totNum">04</span></span>
         <span class="countdown" title="Secondi al cambio slide">
           <span class="ico" aria-hidden="true">⏱</span><span id="countdown">18</span>s
         </span>
@@ -436,51 +466,39 @@
   /* ============== CONTENUTI DELLE SLIDE ============== */
   const SLIDES = [
     {
-      n:"01", kicker:"Introduzione", hero:true,
-      title:"Umberto Terracini e la Nascita della Repubblica",
-      subtitle:"L'Assemblea Costituente e i valori della nostra Costituzione"
-    },
-    {
-      n:"02", kicker:"L'Assemblea Costituente",
+      n:"01", kicker:"Parte 1 · L'Assemblea Costituente",
       title:"Cos'è l'Assemblea Costituente?",
       points:[
-        "Eletta il 2 giugno 1946 (primo voto esteso anche alle donne).",
+        "Eletta il 2 giugno 1946: per la prima volta votano anche le donne.",
         "Composta da 556 deputati scelti dal popolo.",
-        "Compito: scrivere la nuova legge fondamentale dell'Italia dopo la caduta del fascismo."
+        "Compito: scrivere la nuova Costituzione e portare l'Italia dal fascismo alla democrazia."
       ]
     },
     {
-      n:"03", kicker:"Biografia",
+      n:"02", kicker:"Parte 2 · Biografia",
       title:"Chi era Umberto Terracini?",
       points:[
-        "Nato a Genova nel 1895 da famiglia ebrea, laureato in Giurisprudenza.",
-        "Co-fondatore del Partito Comunista Italiano con Antonio Gramsci.",
-        "Ha scontato oltre 11 anni di carcere e 5 di confino per la sua opposizione al fascismo."
+        "Nato a Genova nel 1895 da famiglia ebrea, laureato in Giurisprudenza a Torino.",
+        "Tra i fondatori del Partito Comunista Italiano con Antonio Gramsci.",
+        "Oltre 11 anni di carcere e 5 di confino durante il fascismo: coerente con i suoi valori di libertà e democrazia.",
+        "Dal 1947 Presidente dell'Assemblea Costituente: dalla prigione alla guida dei lavori."
       ]
     },
     {
-      n:"04", kicker:"Il ruolo",
-      title:"Il Presidente dell'Assemblea",
-      points:[
-        "Nel 1947 viene eletto Presidente dell'Assemblea Costituente.",
-        "Scelto per la sua coerente difesa della libertà e della democrazia.",
-        "Ha guidato i lavori che hanno portato alla stesura della Costituzione."
-      ]
-    },
-    {
-      n:"05", kicker:"Il contributo",
+      n:"03", kicker:"Parte 3 · Il contributo",
       title:"L'Articolo 3 e la Firma",
       points:[
-        "Ha lottato per inserire l'espressione «senza distinzione di sesso» nell'Articolo 3 (uguaglianza).",
-        "Il 27 dicembre 1947 ha firmato ufficialmente la Costituzione insieme a De Nicola e De Gasperi."
+        "Volle inserire l'espressione «senza distinzione di sesso» nell'Articolo 3: parità tra uomini e donne.",
+        "Il 27 dicembre 1947 firmò la Costituzione con Enrico De Nicola e Alcide De Gasperi."
       ]
     },
     {
-      n:"06", kicker:"Conclusione",
+      n:"04", kicker:"Parte 4 · Conclusione",
       title:"«L'Italia è una Repubblica»",
       points:[
-        "Il potere appartiene al popolo e non a un sovrano o a un dittatore.",
-        "Garanzia di diritti, libertà e pari dignità per tutti i cittadini."
+        "Il potere appartiene al popolo, non a un re o a un dittatore.",
+        "Uno Stato fondato su libertà, rispetto delle regole e diritti di tutti i cittadini.",
+        "Conquiste ottenute grazie al sacrificio di uomini come Umberto Terracini."
       ]
     }
   ];
