@@ -1,794 +1,368 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Video-presentazione interattiva su Umberto Terracini e la nascita della Repubblica Italiana.">
-<title>Umberto Terracini e la Nascita della Repubblica</title>
-<style>
-  :root{
-    --bg-0:#080b16;
-    --bg-1:#0f1630;
-    --surface:rgba(22,29,54,.72);
-    --surface-solid:#161d36;
-    --surface-2:#1d2647;
-    --border:rgba(255,255,255,.09);
-    --border-strong:rgba(255,255,255,.16);
-    --text:#eef1fb;
-    --muted:#9aa5c6;
-    --muted-2:#6f7aa0;
-    --accent:#7aa2f7;
-    --accent-strong:#5b86f5;
-    --accent-soft:rgba(122,162,247,.14);
-    --rec:#ff5a6e;
-    --rec-soft:rgba(255,90,110,.16);
-    --green:#2f9e5b;
-    --tri-white:#e9edf6;
-    --red:#ce2b37;
-    --radius:22px;
-    --radius-sm:13px;
-    --shadow:0 28px 70px rgba(0,0,0,.5);
-    --sans:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    --serif:"Iowan Old Style","Palatino Linotype","Book Antiqua",Georgia,"Times New Roman",serif;
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Video-presentazione su Umberto Terracini, l'Assemblea Costituente e la nascita della Repubblica Italiana.">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,500;0,600;0,700;1,600&family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+  <title>Umberto Terracini e la Repubblica</title>
+  <style>
+    :root{
+      color-scheme:dark;
+      --bg:#0a0e1c;
+      --stage:#0f1530;
+      --stage-2:#131a38;
+      --border:rgba(233,236,247,.10);
+      --border-strong:rgba(233,236,247,.20);
+      --text:#eef0f8;
+      --text-soft:#dde1f0;
+      --muted:#9aa3c0;
+      --muted-2:#6c7498;
+      --gold:#d6ab52;
+      --gold-2:#e6c574;
+      --gold-soft:rgba(214,171,82,.14);
+      --green:#1a9d55;
+      --tri-white:#edefe8;
+      --red:#cf2b3b;
+      --radius:20px;
+      --serif:"Spectral","Iowan Old Style",Georgia,serif;
+      --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+      --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+    }
 
-  *{box-sizing:border-box;}
-  html,body{height:100%;}
-  body{
-    margin:0;
-    font-family:var(--sans);
-    color:var(--text);
-    background:
-      radial-gradient(1100px 700px at 12% -8%, rgba(122,162,247,.16), transparent 60%),
-      radial-gradient(900px 700px at 100% 110%, rgba(206,43,55,.12), transparent 55%),
-      linear-gradient(160deg, var(--bg-0), var(--bg-1) 55%, #0a0f22);
-    background-attachment:fixed;
-    min-height:100dvh;
-    -webkit-font-smoothing:antialiased;
-    text-rendering:optimizeLegibility;
-    line-height:1.5;
-  }
+    *{box-sizing:border-box;}
+    html,body{height:100%;}
+    body{
+      margin:0;
+      font-family:var(--sans);
+      color:var(--text);
+      background:
+        radial-gradient(1200px 820px at 14% -12%, rgba(214,171,82,.11), transparent 56%),
+        radial-gradient(1000px 760px at 104% 116%, rgba(26,52,120,.5), transparent 60%),
+        var(--bg);
+      background-attachment:fixed;
+      min-height:100dvh;
+      display:flex;flex-direction:column;
+      -webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;
+      line-height:1.55;
+    }
 
-  /* Striscia tricolore decorativa */
-  .tricolore{
-    position:fixed;top:0;left:0;right:0;height:4px;z-index:50;
-    background:linear-gradient(90deg,
-      var(--green) 0%, var(--green) 33.33%,
-      var(--tri-white) 33.33%, var(--tri-white) 66.66%,
-      var(--red) 66.66%, var(--red) 100%);
-  }
+    .rail{
+      position:fixed;inset:0 0 auto 0;height:4px;z-index:40;
+      background:linear-gradient(90deg,
+        var(--green) 0 33.33%, var(--tri-white) 33.33% 66.66%, var(--red) 66.66% 100%);
+    }
 
-  .wrap{
-    max-width:1000px;
-    margin:0 auto;
-    padding:clamp(20px,4vw,40px) clamp(16px,4vw,32px) 48px;
-  }
+    .app{
+      width:100%;max-width:1000px;
+      margin:0 auto;
+      flex:1 1 auto;
+      display:flex;flex-direction:column;justify-content:center;
+      gap:18px;
+      padding:clamp(26px,5vw,52px) clamp(16px,4vw,34px);
+    }
 
-  .masthead{
-    display:flex;align-items:center;gap:12px;
-    margin:8px 0 clamp(16px,3vw,26px);
-    color:var(--muted);
-    font-size:.82rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600;
-  }
-  .masthead .badge{
-    display:inline-flex;align-items:center;justify-content:center;
-    width:30px;height:30px;border-radius:9px;
-    background:var(--accent-soft);border:1px solid var(--border-strong);
-    color:var(--accent);font-size:1rem;
-  }
-  .masthead b{color:var(--text);}
+    /* ===== Palco ===== */
+    .stage{
+      position:relative;
+      background:linear-gradient(165deg,var(--stage),var(--stage-2));
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:0 30px 80px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.04);
+      overflow:hidden;
+      display:flex;flex-direction:column;
+      min-height:clamp(440px,64vh,600px);
+    }
 
-  /* ===== Palco / slide ===== */
-  .stage{
-    position:relative;
-    background:var(--surface);
-    border:1px solid var(--border);
-    border-radius:var(--radius);
-    box-shadow:var(--shadow);
-    backdrop-filter:blur(14px);
-    -webkit-backdrop-filter:blur(14px);
-    overflow:hidden;
-    min-height:clamp(440px,74vh,660px);
-    display:flex;flex-direction:column;
-  }
+    .progress-track{height:4px;width:100%;background:rgba(255,255,255,.06);flex:0 0 auto;}
+    .progress-fill{
+      height:100%;width:0%;
+      background:linear-gradient(90deg,var(--gold),var(--gold-2));
+      box-shadow:0 0 16px rgba(214,171,82,.5);
+      transition:width .09s linear;
+    }
 
-  .progress-track{
-    height:5px;width:100%;
-    background:rgba(255,255,255,.07);
-    flex:0 0 auto;
-    position:relative;z-index:5;
-  }
-  .progress-fill{
-    height:100%;width:0%;
-    background:linear-gradient(90deg,var(--accent),var(--accent-strong));
-    box-shadow:0 0 14px rgba(122,162,247,.55);
-    transition:width .08s linear;
-  }
+    .stage-head{
+      display:flex;align-items:center;gap:14px;
+      padding:clamp(15px,2.6vw,20px) clamp(26px,5vw,58px);
+      border-bottom:1px solid var(--border);
+      background:rgba(255,255,255,.02);
+      flex:0 0 auto;
+    }
+    .seal{
+      display:inline-flex;align-items:center;justify-content:center;
+      width:38px;height:38px;flex:0 0 auto;border-radius:50%;
+      background:var(--gold-soft);border:1px solid rgba(214,171,82,.45);
+      color:var(--gold-2);font-size:1.2rem;
+    }
+    .doc-title{
+      font-family:var(--serif);font-weight:700;
+      font-size:clamp(1.02rem,2.5vw,1.5rem);line-height:1.14;margin:0;
+      letter-spacing:.01em;text-wrap:balance;
+    }
+    .doc-sub{
+      font-size:clamp(.76rem,1.7vw,.95rem);color:var(--muted);margin:3px 0 0;
+    }
 
-  .stage-header{
-    display:flex;align-items:center;gap:13px;
-    padding:clamp(13px,2.4vw,18px) clamp(24px,5vw,60px);
-    border-bottom:1px solid var(--border);
-    background:rgba(255,255,255,.025);
-    flex:0 0 auto;
-  }
-  .sh-badge{
-    display:inline-flex;align-items:center;justify-content:center;
-    width:34px;height:34px;flex:0 0 auto;border-radius:9px;
-    background:var(--accent-soft);border:1px solid var(--border-strong);
-    color:var(--accent);font-size:1.15rem;
-  }
-  .sh-title{
-    font-family:var(--serif);font-weight:700;
-    font-size:clamp(1rem,2.5vw,1.45rem);line-height:1.15;
-    letter-spacing:-.01em;
-  }
-  .sh-sub{
-    color:var(--muted);font-size:clamp(.76rem,1.7vw,.95rem);
-    margin-top:2px;
-  }
+    /* ===== Slide ===== */
+    .slides{position:relative;flex:1 1 auto;display:grid;}
+    .slide{
+      grid-area:1 / 1;
+      padding:clamp(24px,4.2vw,50px) clamp(26px,5vw,58px);
+      display:flex;flex-direction:column;justify-content:center;
+      opacity:0;visibility:hidden;
+      transform:translateY(12px);
+      transition:opacity .6s ease, transform .6s ease, visibility 0s linear .6s;
+    }
+    .slide.is-active{
+      opacity:1;visibility:visible;transform:none;
+      transition:opacity .6s ease, transform .6s ease, visibility 0s;
+    }
 
-  .slides{position:relative;flex:1 1 auto;display:grid;}
-  .slide{
-    grid-area:1 / 1;
-    padding:clamp(22px,4vw,46px) clamp(24px,5vw,60px);
-    display:flex;flex-direction:column;justify-content:center;
-    opacity:0;visibility:hidden;
-    transform:translateY(14px) scale(.99);
-    transition:opacity .6s ease, transform .6s ease, visibility 0s linear .6s;
-    overflow:auto;
-  }
-  .slide.is-active{
-    opacity:1;visibility:visible;
-    transform:none;
-    transition:opacity .6s ease, transform .6s ease, visibility 0s;
-  }
+    .kicker{
+      font-family:var(--mono);font-weight:600;
+      font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;
+      color:var(--gold-2);
+      display:flex;align-items:center;gap:12px;
+      margin-bottom:clamp(14px,2.4vw,20px);
+    }
+    .kicker .num{
+      color:var(--muted);
+      border:1px solid var(--border-strong);border-radius:6px;
+      padding:2px 8px;letter-spacing:.08em;
+    }
 
-  .slide-kicker{
-    display:flex;align-items:center;gap:12px;
-    color:var(--accent);
-    font-size:.8rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
-    margin-bottom:clamp(14px,2.5vw,22px);
-  }
-  .slide-num{
-    font-family:var(--serif);
-    font-size:.95rem;
-    color:var(--muted);
-    border:1px solid var(--border-strong);
-    border-radius:8px;
-    padding:2px 9px;
-    letter-spacing:.05em;
-  }
+    .slide-title{
+      font-family:var(--serif);font-weight:700;
+      font-size:clamp(1.75rem,4.6vw,3rem);line-height:1.1;margin:0;
+      letter-spacing:-.005em;text-wrap:balance;
+    }
 
-  .slide-title{
-    font-family:var(--serif);
-    font-weight:700;
-    font-size:clamp(1.7rem,4.4vw,3rem);
-    line-height:1.12;
-    margin:0;
-    letter-spacing:-.01em;
-    text-wrap:balance;
-  }
+    .points{
+      list-style:none;padding:0;margin:clamp(18px,3vw,28px) 0 0;
+      display:flex;flex-direction:column;gap:clamp(12px,1.8vw,17px);
+      max-width:64ch;
+    }
+    .points li{
+      position:relative;padding-left:32px;
+      font-size:clamp(1rem,2.05vw,1.24rem);color:var(--text-soft);
+      opacity:0;transform:translateY(8px);
+      transition:opacity .5s ease, transform .5s ease;
+    }
+    .points li::before{
+      content:"";position:absolute;left:0;top:.62em;
+      width:10px;height:10px;border-radius:50%;
+      background:var(--gold);box-shadow:0 0 0 4px var(--gold-soft);
+    }
+    .slide.is-active .points li{opacity:1;transform:none;}
+    .slide.is-active .points li:nth-child(1){transition-delay:.16s;}
+    .slide.is-active .points li:nth-child(2){transition-delay:.30s;}
+    .slide.is-active .points li:nth-child(3){transition-delay:.44s;}
+    .slide.is-active .points li:nth-child(4){transition-delay:.58s;}
 
-  .slide-subtitle{
-    font-size:clamp(1.05rem,2.6vw,1.5rem);
-    color:var(--muted);
-    margin:clamp(16px,2.5vw,22px) 0 0;
-    max-width:36ch;
-    font-weight:400;
-  }
+    .slide-title em{
+      color:var(--gold-2);font-style:italic;
+    }
 
-  .slide-points{
-    list-style:none;padding:0;
-    margin:clamp(16px,2.8vw,26px) 0 0;
-    display:flex;flex-direction:column;gap:clamp(11px,1.7vw,16px);
-    max-width:62ch;
-  }
-  .slide-points li{
-    position:relative;
-    padding-left:34px;
-    font-size:clamp(1rem,2.05vw,1.24rem);
-    color:#dbe2f4;
-    opacity:0;transform:translateY(10px);
-    transition:opacity .55s ease, transform .55s ease;
-  }
-  .slide-points li::before{
-    content:"";
-    position:absolute;left:0;top:.62em;
-    width:12px;height:12px;border-radius:50%;
-    background:linear-gradient(135deg,var(--accent),var(--accent-strong));
-    box-shadow:0 0 0 5px var(--accent-soft);
-  }
-  .slide.is-active .slide-points li{opacity:1;transform:none;}
-  .slide.is-active .slide-points li:nth-child(1){transition-delay:.2s;}
-  .slide.is-active .slide-points li:nth-child(2){transition-delay:.38s;}
-  .slide.is-active .slide-points li:nth-child(3){transition-delay:.56s;}
-  .slide.is-active .slide-points li:nth-child(4){transition-delay:.74s;}
+    /* ===== Controlli minimi ===== */
+    .controls{
+      display:flex;align-items:center;gap:12px;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+    .ctl{
+      appearance:none;cursor:pointer;font-family:var(--sans);
+      color:var(--text);background:rgba(255,255,255,.05);
+      border:1px solid var(--border);border-radius:11px;
+      width:44px;height:44px;font-size:1.1rem;line-height:1;
+      display:inline-flex;align-items:center;justify-content:center;
+      transition:background .18s ease, border-color .18s ease, transform .12s ease;
+    }
+    .ctl:hover{background:rgba(255,255,255,.1);border-color:var(--border-strong);}
+    .ctl:active{transform:translateY(1px);}
+    .ctl:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+    .ctl--play{
+      background:var(--gold-soft);border-color:rgba(214,171,82,.5);color:var(--gold-2);
+      width:52px;height:52px;font-size:1.15rem;
+    }
+    .ctl--play:hover{background:rgba(214,171,82,.22);}
 
-  /* Slide titolo (hero) */
-  .slide--hero{align-items:center;text-align:center;}
-  .slide--hero .slide-kicker{justify-content:center;}
-  .slide--hero .slide-title{font-size:clamp(2rem,6vw,3.6rem);max-width:16ch;}
-  .slide--hero .slide-subtitle{margin-left:auto;margin-right:auto;text-align:center;}
+    .dots{display:flex;align-items:center;gap:9px;margin:0 4px;}
+    .dot{
+      width:10px;height:10px;border-radius:50%;padding:0;border:0;cursor:pointer;
+      background:rgba(255,255,255,.2);transition:background .2s ease, width .2s ease;
+    }
+    .dot:hover{background:rgba(255,255,255,.42);}
+    .dot.is-active{background:var(--gold);width:26px;border-radius:5px;}
+    .dot:focus-visible{outline:2px solid var(--gold);outline-offset:3px;}
 
-  /* ===== Controlli scorrimento ===== */
-  .controls{
-    display:flex;align-items:center;gap:10px;flex-wrap:wrap;
-    margin-top:16px;
-    padding:12px 16px;
-    background:var(--surface);
-    border:1px solid var(--border);
-    border-radius:var(--radius-sm);
-    backdrop-filter:blur(10px);
-  }
-  .btn{
-    appearance:none;cursor:pointer;
-    font-family:inherit;font-size:.95rem;font-weight:600;
-    color:var(--text);
-    background:var(--surface-2);
-    border:1px solid var(--border-strong);
-    border-radius:11px;
-    padding:11px 16px;
-    display:inline-flex;align-items:center;gap:8px;
-    transition:transform .12s ease, background .18s ease, border-color .18s ease, opacity .18s ease;
-    -webkit-tap-highlight-color:transparent;
-  }
-  .btn:hover{background:#243056;border-color:var(--border-strong);}
-  .btn:active{transform:translateY(1px);}
-  .btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
-  .btn .ico{font-size:1.05em;line-height:1;}
-  .btn--icon{padding:11px 13px;}
-  .btn--primary{
-    background:linear-gradient(135deg,var(--accent),var(--accent-strong));
-    border-color:transparent;color:#0b1024;font-weight:700;
-    box-shadow:0 8px 22px rgba(91,134,245,.35);
-  }
-  .btn--primary:hover{filter:brightness(1.06);background:linear-gradient(135deg,var(--accent),var(--accent-strong));}
-  .btn[disabled],.btn[aria-disabled="true"]{
-    opacity:.4;cursor:not-allowed;pointer-events:none;
-  }
-  .btn--rec{background:var(--rec-soft);border-color:rgba(255,90,110,.45);color:#ffd7dd;}
-  .btn--rec:hover{background:rgba(255,90,110,.26);}
+    .count{
+      font-family:var(--mono);font-size:.82rem;color:var(--muted);
+      font-variant-numeric:tabular-nums;letter-spacing:.05em;
+      display:inline-flex;gap:5px;align-items:center;margin-left:2px;
+    }
+    .count b{color:var(--text);font-weight:600;}
+    .count-sep{color:var(--muted-2);}
 
-  .spacer{flex:1 1 auto;}
-  .meta{
-    display:flex;align-items:center;gap:14px;
-    color:var(--muted);font-variant-numeric:tabular-nums;font-size:.92rem;
-  }
-  .counter b{color:var(--text);font-family:var(--serif);}
-  .countdown{
-    display:inline-flex;align-items:center;gap:6px;
-    padding:5px 10px;border-radius:9px;
-    background:rgba(255,255,255,.05);border:1px solid var(--border);
-    min-width:56px;justify-content:center;
-  }
-
-  /* Puntini indicatori */
-  .dots{display:flex;gap:9px;align-items:center;}
-  .dot{
-    width:11px;height:11px;border-radius:50%;
-    background:rgba(255,255,255,.18);
-    border:0;padding:0;cursor:pointer;
-    transition:transform .2s ease, background .2s ease, width .2s ease;
-  }
-  .dot:hover{background:rgba(255,255,255,.4);}
-  .dot.is-active{background:var(--accent);width:26px;border-radius:6px;}
-  .dot:focus-visible{outline:2px solid var(--accent);outline-offset:3px;}
-
-  /* ===== Registratore ===== */
-  .recorder{
-    margin-top:16px;
-    background:var(--surface);
-    border:1px solid var(--border);
-    border-radius:var(--radius-sm);
-    padding:clamp(16px,3vw,22px);
-    backdrop-filter:blur(10px);
-  }
-  .rec-head{
-    display:flex;align-items:center;justify-content:space-between;gap:12px;
-    flex-wrap:wrap;margin-bottom:16px;
-  }
-  .rec-title{
-    display:flex;align-items:center;gap:10px;
-    font-weight:700;font-size:1.05rem;
-  }
-  .rec-title .ico{color:var(--rec);}
-  .rec-status{
-    display:inline-flex;align-items:center;gap:9px;
-    font-size:.9rem;color:var(--muted);
-    font-variant-numeric:tabular-nums;
-  }
-  .rec-led{
-    width:11px;height:11px;border-radius:50%;
-    background:var(--muted-2);flex:0 0 auto;
-  }
-  .rec-led.is-live{background:var(--rec);animation:pulse 1.1s ease-in-out infinite;}
-  .rec-led.is-paused{background:#e6b450;}
-  @keyframes pulse{
-    0%,100%{box-shadow:0 0 0 0 rgba(255,90,110,.5);}
-    50%{box-shadow:0 0 0 7px rgba(255,90,110,0);}
-  }
-  .rec-time{font-variant-numeric:tabular-nums;font-weight:600;color:var(--text);}
-
-  .rec-controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
-
-  .rec-note{
-    margin-top:14px;font-size:.85rem;color:var(--muted);
-    line-height:1.55;
-  }
-  .rec-warn{
-    margin-top:14px;display:none;
-    padding:12px 14px;border-radius:11px;
-    background:rgba(230,180,80,.1);border:1px solid rgba(230,180,80,.4);
-    color:#f2d79a;font-size:.88rem;line-height:1.55;
-  }
-  .rec-warn.show{display:block;}
-  .rec-warn code{
-    background:rgba(0,0,0,.35);padding:1px 6px;border-radius:5px;
-    font-size:.9em;color:#fff;
-  }
-
-  .playback{
-    margin-top:16px;display:none;
-    padding-top:16px;border-top:1px solid var(--border);
-  }
-  .playback.show{display:block;}
-  .playback-label{
-    font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;
-    color:var(--muted);font-weight:700;margin-bottom:10px;
-  }
-  audio{width:100%;margin-bottom:12px;filter:saturate(.9);}
-
-  .footer{
-    margin-top:26px;text-align:center;
-    color:var(--muted-2);font-size:.8rem;
-  }
-  .footer .hint{color:var(--muted);}
-
-  @media (max-width:600px){
-    .controls{gap:8px;padding:10px 12px;}
-    .btn{padding:10px 13px;font-size:.9rem;}
-    .meta{width:100%;order:5;justify-content:space-between;}
-    .spacer{display:none;}
-    .rec-controls .btn{flex:1 1 auto;justify-content:center;}
-  }
-
-  @media (prefers-reduced-motion:reduce){
-    .slide,.slide-points li{transition-duration:.001s !important;}
-    .rec-led.is-live{animation:none;}
-    .progress-fill{transition:none;}
-  }
-</style>
+    @media (max-width:560px){
+      .stage{min-height:clamp(460px,70vh,640px);}
+      .ctl{width:42px;height:42px;}
+    }
+    @media (prefers-reduced-motion:reduce){
+      .slide,.points li{transition-duration:.001s !important;}
+      .progress-fill{transition:none;}
+    }
+  </style>
 </head>
 <body>
-  <div class="tricolore" aria-hidden="true"></div>
+  <div class="rail" aria-hidden="true"></div>
 
-  <div class="wrap">
-    <div class="masthead">
-      <span class="badge" aria-hidden="true">⚖</span>
-      <span>Educazione&nbsp;Civica · <b>Video-presentazione</b></span>
-    </div>
+  <div class="app">
+    <main class="stage" aria-label="Presentazione: Umberto Terracini e la nascita della Repubblica">
+      <div class="progress-track" role="presentation"><div class="progress-fill" id="progress"></div></div>
 
-    <!-- ===== PALCO ===== -->
-    <main class="stage" aria-label="Presentazione">
-      <div class="progress-track" role="presentation">
-        <div class="progress-fill" id="progress"></div>
-      </div>
-      <header class="stage-header">
-        <span class="sh-badge" aria-hidden="true">⚖</span>
-        <div class="sh-text">
-          <div class="sh-title">Umberto Terracini e la Nascita della Repubblica</div>
-          <div class="sh-sub">L'Assemblea Costituente e i valori della nostra Costituzione</div>
+      <header class="stage-head">
+        <span class="seal" aria-hidden="true">⚖</span>
+        <div>
+          <h1 class="doc-title">Umberto Terracini e la Nascita della Repubblica</h1>
+          <p class="doc-sub">L'Assemblea Costituente e i valori della nostra Costituzione</p>
         </div>
       </header>
+
       <div class="slides" id="slides" aria-live="polite"></div>
     </main>
 
-    <!-- ===== CONTROLLI ===== -->
     <div class="controls" role="group" aria-label="Controlli presentazione">
-      <button class="btn btn--icon" id="prevBtn" title="Slide precedente" aria-label="Slide precedente">
-        <span class="ico" aria-hidden="true">⏮</span>
-      </button>
-      <button class="btn btn--primary" id="playBtn" aria-label="Pausa o riprendi scorrimento">
-        <span class="ico" id="playIco" aria-hidden="true">⏸</span>
-        <span id="playTxt">Pausa</span>
-      </button>
-      <button class="btn btn--icon" id="nextBtn" title="Slide successiva" aria-label="Slide successiva">
-        <span class="ico" aria-hidden="true">⏭</span>
-      </button>
-
+      <button class="ctl" id="prevBtn" aria-label="Slide precedente">‹</button>
+      <button class="ctl ctl--play" id="playBtn" aria-label="Metti in pausa"><span id="playIco">⏸</span></button>
+      <button class="ctl" id="nextBtn" aria-label="Slide successiva">›</button>
       <div class="dots" id="dots" role="tablist" aria-label="Vai alla slide"></div>
-
-      <span class="spacer"></span>
-
-      <div class="meta">
-        <span class="counter"><b id="curNum">01</b> / <span id="totNum">04</span></span>
-        <span class="countdown" title="Secondi al cambio slide">
-          <span class="ico" aria-hidden="true">⏱</span><span id="countdown">18</span>s
-        </span>
-      </div>
+      <div class="count"><b id="curNum">01</b><span class="count-sep">/</span><span id="totNum">04</span></div>
     </div>
-
-    <!-- ===== REGISTRATORE ===== -->
-    <section class="recorder" aria-label="Registratore vocale">
-      <div class="rec-head">
-        <div class="rec-title"><span class="ico" aria-hidden="true">🎙</span> Registratore vocale</div>
-        <div class="rec-status">
-          <span class="rec-led" id="recLed" aria-hidden="true"></span>
-          <span id="recStatus">Pronto</span>
-          <span class="rec-time" id="recTime">00:00</span>
-        </div>
-      </div>
-
-      <div class="rec-controls">
-        <button class="btn btn--rec" id="recBtn">
-          <span class="ico" aria-hidden="true">●</span> Registra voce
-        </button>
-        <button class="btn" id="pauseRecBtn" disabled>
-          <span class="ico" aria-hidden="true">⏸</span> <span id="pauseRecTxt">Pausa</span>
-        </button>
-        <button class="btn" id="stopRecBtn" disabled>
-          <span class="ico" aria-hidden="true">⏹</span> Stop
-        </button>
-      </div>
-
-      <div class="rec-warn" id="recWarn"></div>
-
-      <p class="rec-note">
-        Premendo <b>Registra voce</b> la presentazione riparte dalla slide 1 e scorre da sola:
-        parla mentre le slide avanzano. La <b>Pausa</b> ferma insieme voce e slide, così restano sincronizzate.
-      </p>
-
-      <div class="playback" id="playback">
-        <div class="playback-label">Riascolta la registrazione</div>
-        <audio id="audioEl" controls></audio>
-        <div class="rec-controls">
-          <a class="btn btn--primary" id="downloadBtn" aria-disabled="true" download="narrazione-terracini.webm">
-            <span class="ico" aria-hidden="true">⬇</span> Scarica audio
-          </a>
-          <button class="btn" id="clearBtn">
-            <span class="ico" aria-hidden="true">🗑</span> Cancella
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <p class="footer">
-      Umberto Terracini e la nascita della Repubblica ·
-      <span class="hint">Scorciatoie: <b>Spazio</b> = pausa/riprendi · <b>← →</b> = slide</span>
-    </p>
   </div>
 
-<script>
-(function(){
-  "use strict";
+  <script>
+  (function(){
+    "use strict";
 
-  /* ============== CONTENUTI DELLE SLIDE ============== */
-  const SLIDES = [
-    {
-      n:"01", kicker:"Parte 1 · L'Assemblea Costituente",
-      title:"Cos'è l'Assemblea Costituente?",
-      points:[
-        "Eletta il 2 giugno 1946: per la prima volta votano anche le donne.",
-        "Composta da 556 deputati scelti dal popolo.",
-        "Compito: scrivere la nuova Costituzione e portare l'Italia dal fascismo alla democrazia."
-      ]
-    },
-    {
-      n:"02", kicker:"Parte 2 · Biografia",
-      title:"Chi era Umberto Terracini?",
-      points:[
-        "Nato a Genova nel 1895 da famiglia ebrea, laureato in Giurisprudenza a Torino.",
-        "Tra i fondatori del Partito Comunista Italiano con Antonio Gramsci.",
-        "Oltre 11 anni di carcere e 5 di confino durante il fascismo: coerente con i suoi valori di libertà e democrazia.",
-        "Dal 1947 Presidente dell'Assemblea Costituente: dalla prigione alla guida dei lavori."
-      ]
-    },
-    {
-      n:"03", kicker:"Parte 3 · Il contributo",
-      title:"L'Articolo 3 e la Firma",
-      points:[
-        "Volle inserire l'espressione «senza distinzione di sesso» nell'Articolo 3: parità tra uomini e donne.",
-        "Il 27 dicembre 1947 firmò la Costituzione con Enrico De Nicola e Alcide De Gasperi."
-      ]
-    },
-    {
-      n:"04", kicker:"Parte 4 · Conclusione",
-      title:"«L'Italia è una Repubblica»",
-      points:[
-        "Il potere appartiene al popolo, non a un re o a un dittatore.",
-        "Uno Stato fondato su libertà, rispetto delle regole e diritti di tutti i cittadini.",
-        "Conquiste ottenute grazie al sacrificio di uomini come Umberto Terracini."
-      ]
-    }
-  ];
+    const SLIDES = [
+      {
+        n:"01", kicker:"L'Assemblea Costituente", dur:16000,
+        title:"Cos'è l'Assemblea Costituente?",
+        points:[
+          "Eletta il 2 giugno 1946: per la prima volta votano anche le donne.",
+          "Composta da 556 deputati scelti dal popolo.",
+          "Compito: scrivere la nuova Costituzione e portare l'Italia dal fascismo alla democrazia."
+        ]
+      },
+      {
+        n:"02", kicker:"Biografia", dur:20000,
+        title:"Chi era Umberto Terracini?",
+        points:[
+          "Nato a Genova nel 1895 da famiglia ebrea, laureato in Giurisprudenza a Torino.",
+          "Tra i fondatori del Partito Comunista Italiano con Antonio Gramsci.",
+          "Oltre 11 anni di carcere e 5 di confino durante il fascismo: coerente con i suoi valori di libertà e democrazia.",
+          "Dal 1947 Presidente dell'Assemblea Costituente: dalla prigione alla guida dei lavori."
+        ]
+      },
+      {
+        n:"03", kicker:"Il contributo", dur:15000,
+        title:"L'Articolo 3 e la Firma",
+        points:[
+          "Volle inserire l'espressione «senza distinzione di sesso» nell'Articolo 3: parità tra uomini e donne.",
+          "Il 27 dicembre 1947 firmò la Costituzione con Enrico De Nicola e Alcide De Gasperi."
+        ]
+      },
+      {
+        n:"04", kicker:"Conclusione", dur:16000,
+        title:"«L'Italia è una Repubblica»",
+        points:[
+          "Il potere appartiene al popolo, non a un re o a un dittatore.",
+          "Uno Stato fondato su libertà, rispetto delle regole e diritti di tutti i cittadini.",
+          "Conquiste ottenute grazie al sacrificio di uomini come Umberto Terracini."
+        ]
+      }
+    ];
 
-  const SLIDE_DURATION = 18000; // ms per slide (18s, nel range 15-20s richiesto)
+    const $ = (id)=>document.getElementById(id);
+    const slidesEl=$("slides"), dotsEl=$("dots"), progress=$("progress");
+    const playBtn=$("playBtn"), playIco=$("playIco"), prevBtn=$("prevBtn"), nextBtn=$("nextBtn");
+    const curNum=$("curNum"), totNum=$("totNum");
+    const esc=(s)=>s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
 
-  /* ============== RIFERIMENTI DOM ============== */
-  const $ = (id)=>document.getElementById(id);
-  const slidesEl = $("slides");
-  const dotsEl   = $("dots");
-  const progress = $("progress");
-  const playBtn  = $("playBtn"), playIco = $("playIco"), playTxt = $("playTxt");
-  const prevBtn  = $("prevBtn"), nextBtn = $("nextBtn");
-  const curNum   = $("curNum"),  totNum  = $("totNum"), countdownEl = $("countdown");
+    const slideNodes=[], dotNodes=[];
+    SLIDES.forEach((s,i)=>{
+      const el=document.createElement("article");
+      el.className="slide";
+      el.setAttribute("role","group");
+      el.setAttribute("aria-roledescription","slide");
+      el.setAttribute("aria-label",(i+1)+" di "+SLIDES.length+": "+s.title);
+      let html='<div class="kicker"><span class="num">'+s.n+'</span>'+esc(s.kicker)+'</div>';
+      html+='<h2 class="slide-title">'+esc(s.title)+'</h2>';
+      html+='<ul class="points">'+s.points.map(p=>'<li>'+esc(p)+'</li>').join("")+'</ul>';
+      el.innerHTML=html;
+      slidesEl.appendChild(el);
+      slideNodes.push(el);
 
-  /* ============== COSTRUZIONE SLIDE ============== */
-  const slideNodes = [];
-  const dotNodes = [];
-  const esc = (s)=>s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
-
-  SLIDES.forEach((s,i)=>{
-    const el = document.createElement("article");
-    el.className = "slide" + (s.hero ? " slide--hero" : "");
-    el.setAttribute("role","group");
-    el.setAttribute("aria-roledescription","slide");
-    el.setAttribute("aria-label", (i+1)+" di "+SLIDES.length+": "+s.title);
-
-    let html = '<div class="slide-kicker"><span class="slide-num">'+s.n+'</span>'+esc(s.kicker)+'</div>';
-    html += '<h2 class="slide-title">'+esc(s.title)+'</h2>';
-    if(s.subtitle) html += '<p class="slide-subtitle">'+esc(s.subtitle)+'</p>';
-    if(s.points && s.points.length){
-      html += '<ul class="slide-points">'+ s.points.map(p=>'<li>'+esc(p)+'</li>').join("") +'</ul>';
-    }
-    el.innerHTML = html;
-    slidesEl.appendChild(el);
-    slideNodes.push(el);
-
-    const dot = document.createElement("button");
-    dot.className = "dot";
-    dot.setAttribute("role","tab");
-    dot.setAttribute("aria-label","Slide "+(i+1));
-    dot.addEventListener("click", ()=>goTo(i, true));
-    dotsEl.appendChild(dot);
-    dotNodes.push(dot);
-  });
-  totNum.textContent = String(SLIDES.length).padStart(2,"0");
-
-  /* ============== STATO SCORRIMENTO ============== */
-  let current = 0;
-  let isPlaying = true;
-  let elapsed = 0;        // ms trascorsi sulla slide corrente
-  let lastTs = null;
-
-  function render(){
-    slideNodes.forEach((el,i)=> el.classList.toggle("is-active", i===current));
-    dotNodes.forEach((d,i)=>{
-      d.classList.toggle("is-active", i===current);
-      d.setAttribute("aria-selected", i===current ? "true":"false");
+      const dot=document.createElement("button");
+      dot.className="dot";dot.setAttribute("role","tab");
+      dot.setAttribute("aria-label","Slide "+(i+1));
+      dot.addEventListener("click",()=>goTo(i,true));
+      dotsEl.appendChild(dot);
+      dotNodes.push(dot);
     });
-    curNum.textContent = String(current+1).padStart(2,"0");
-  }
+    totNum.textContent=String(SLIDES.length).padStart(2,"0");
 
-  function setProgress(p){
-    progress.style.width = (p*100).toFixed(2)+"%";
-    countdownEl.textContent = Math.max(0, Math.ceil((SLIDE_DURATION - p*SLIDE_DURATION)/1000));
-  }
+    let current=0, isPlaying=true, elapsed=0, lastTs=null;
 
-  function resetTimer(){ elapsed = 0; lastTs = null; setProgress(0); }
-
-  function goTo(i, userAction){
-    current = (i + SLIDES.length) % SLIDES.length;
-    resetTimer();
-    render();
-    if(userAction && !isPlaying) setProgress(0);
-  }
-  function next(){ goTo(current+1); }
-  function prev(){ goTo(current-1); }
-
-  function setPlaying(v){
-    isPlaying = v;
-    playIco.textContent = v ? "⏸" : "▶";
-    playTxt.textContent = v ? "Pausa" : "Riprendi";
-    playBtn.setAttribute("aria-pressed", v ? "true":"false");
-    if(v) lastTs = null; // evita salti alla ripresa
-  }
-  function togglePlay(){ setPlaying(!isPlaying); }
-
-  // Loop di animazione: progresso fluido e avanzamento automatico
-  function tick(ts){
-    if(lastTs === null) lastTs = ts;
-    let dt = ts - lastTs;
-    lastTs = ts;
-    if(dt > 120) dt = 120; // evita scatti dopo cambio scheda
-    if(isPlaying){
-      elapsed += dt;
-      const p = Math.min(elapsed / SLIDE_DURATION, 1);
-      setProgress(p);
-      if(elapsed >= SLIDE_DURATION){
-        goTo(current+1); // avanza (torna a inizio dopo l'ultima)
-      }
+    function render(){
+      slideNodes.forEach((el,i)=>el.classList.toggle("is-active",i===current));
+      dotNodes.forEach((d,i)=>{
+        d.classList.toggle("is-active",i===current);
+        d.setAttribute("aria-selected",i===current?"true":"false");
+      });
+      curNum.textContent=String(current+1).padStart(2,"0");
     }
+    function setProgress(p){progress.style.width=(p*100).toFixed(2)+"%";}
+    function resetTimer(){elapsed=0;lastTs=null;setProgress(0);}
+    function goTo(i,user){
+      current=(i+SLIDES.length)%SLIDES.length;
+      resetTimer();render();
+      if(user && !isPlaying) setProgress(0);
+    }
+    function setPlaying(v){
+      isPlaying=v;
+      playIco.textContent=v?"⏸":"▶";
+      playBtn.setAttribute("aria-label",v?"Metti in pausa":"Riprendi");
+    }
+
+    function tick(ts){
+      if(lastTs===null) lastTs=ts;
+      let dt=ts-lastTs; lastTs=ts;
+      if(dt>120) dt=120;
+      if(isPlaying){
+        elapsed+=dt;
+        const dur=SLIDES[current].dur;
+        setProgress(Math.min(elapsed/dur,1));
+        if(elapsed>=dur) goTo(current+1);
+      }
+      requestAnimationFrame(tick);
+    }
+
+    playBtn.addEventListener("click",()=>setPlaying(!isPlaying));
+    nextBtn.addEventListener("click",()=>goTo(current+1));
+    prevBtn.addEventListener("click",()=>goTo(current-1));
+    document.addEventListener("keydown",(e)=>{
+      if(e.code==="Space"){e.preventDefault();setPlaying(!isPlaying);}
+      else if(e.code==="ArrowRight"){e.preventDefault();goTo(current+1);}
+      else if(e.code==="ArrowLeft"){e.preventDefault();goTo(current-1);}
+    });
+    document.addEventListener("visibilitychange",()=>{if(document.hidden)lastTs=null;});
+
+    render();setProgress(0);
     requestAnimationFrame(tick);
-  }
-
-  /* ============== EVENTI CONTROLLI ============== */
-  playBtn.addEventListener("click", togglePlay);
-  nextBtn.addEventListener("click", ()=>next());
-  prevBtn.addEventListener("click", ()=>prev());
-
-  document.addEventListener("keydown", (e)=>{
-    if(e.target && /^(INPUT|TEXTAREA|AUDIO)$/.test(e.target.tagName)) return;
-    if(e.code === "Space"){ e.preventDefault(); togglePlay(); }
-    else if(e.code === "ArrowRight"){ e.preventDefault(); next(); }
-    else if(e.code === "ArrowLeft"){ e.preventDefault(); prev(); }
-  });
-
-  // Pausa automatica quando la scheda non è visibile
-  document.addEventListener("visibilitychange", ()=>{ if(document.hidden) lastTs = null; });
-
-  render();
-  setProgress(0);
-  requestAnimationFrame(tick);
-
-  /* ============== REGISTRATORE AUDIO ============== */
-  const recBtn = $("recBtn"), pauseRecBtn = $("pauseRecBtn"), pauseRecTxt = $("pauseRecTxt");
-  const stopRecBtn = $("stopRecBtn"), recLed = $("recLed"), recStatus = $("recStatus"), recTime = $("recTime");
-  const recWarn = $("recWarn"), playback = $("playback"), audioEl = $("audioEl");
-  const downloadBtn = $("downloadBtn"), clearBtn = $("clearBtn");
-
-  let mediaRecorder = null, chunks = [], stream = null;
-  let recState = "idle";              // idle | recording | paused
-  let recElapsed = 0, recLast = 0, recTimerId = null;
-  let currentUrl = null;
-
-  const micSupported = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.MediaRecorder);
-
-  // Avviso preventivo: microfono richiede contesto sicuro (HTTPS o localhost)
-  if(!micSupported){
-    showWarn("Questo browser non espone l'API di registrazione (MediaRecorder). Prova con una versione recente di Chrome, Edge o Firefox.");
-    recBtn.disabled = true;
-  } else if(!window.isSecureContext){
-    showWarn("Il microfono è bloccato perché la pagina non è in un «contesto sicuro». Se hai aperto il file con doppio clic (indirizzo <code>file://</code>), servila in locale — ad es. <code>python3 -m http.server</code> e apri <code>http://localhost:8000</code> — oppure pubblicala online (HTTPS).");
-  }
-
-  function showWarn(html){ recWarn.innerHTML = html; recWarn.classList.add("show"); }
-
-  function pickMime(){
-    const types = ["audio/webm;codecs=opus","audio/webm","audio/ogg;codecs=opus","audio/mp4"];
-    for(const t of types){ if(window.MediaRecorder && MediaRecorder.isTypeSupported(t)) return t; }
-    return "";
-  }
-
-  function fmt(ms){
-    const s = Math.floor(ms/1000);
-    const m = Math.floor(s/60);
-    return String(m).padStart(2,"0")+":"+String(s%60).padStart(2,"0");
-  }
-
-  function startRecTimer(){
-    recLast = performance.now();
-    cancelAnimationFrame(recTimerId);
-    const step = (ts)=>{
-      if(recState === "recording"){
-        recElapsed += ts - recLast;
-        recTime.textContent = fmt(recElapsed);
-      }
-      recLast = ts;
-      recTimerId = requestAnimationFrame(step);
-    };
-    recTimerId = requestAnimationFrame(step);
-  }
-
-  function setRecUI(){
-    const rec = recState === "recording", pausedRec = recState === "paused";
-    recBtn.disabled = rec || pausedRec;
-    pauseRecBtn.disabled = !(rec || pausedRec);
-    stopRecBtn.disabled = !(rec || pausedRec);
-    pauseRecTxt.textContent = pausedRec ? "Riprendi" : "Pausa";
-
-    recLed.classList.toggle("is-live", rec);
-    recLed.classList.toggle("is-paused", pausedRec);
-    recStatus.textContent = rec ? "Registrazione…" : (pausedRec ? "In pausa" : "Pronto");
-  }
-
-  async function startRecording(){
-    if(!micSupported) return;
-    try{
-      stream = await navigator.mediaDevices.getUserMedia({audio:true});
-    }catch(err){
-      let msg = "Impossibile accedere al microfono.";
-      if(err && err.name === "NotAllowedError") msg = "Permesso microfono negato. Consenti l'accesso al microfono nelle impostazioni del sito e riprova.";
-      else if(err && err.name === "NotFoundError") msg = "Nessun microfono rilevato sul dispositivo.";
-      else if(!window.isSecureContext) msg = "Microfono bloccato: servi la pagina via <code>http://localhost</code> o HTTPS (non <code>file://</code>).";
-      showWarn(msg);
-      return;
-    }
-
-    // Nuova registrazione: ripulisci l'eventuale precedente
-    revokeUrl();
-    chunks = [];
-    const mime = pickMime();
-    try{
-      mediaRecorder = new MediaRecorder(stream, mime ? {mimeType:mime} : undefined);
-    }catch(_){
-      mediaRecorder = new MediaRecorder(stream);
-    }
-
-    mediaRecorder.ondataavailable = (e)=>{ if(e.data && e.data.size>0) chunks.push(e.data); };
-    mediaRecorder.onstop = finalizeRecording;
-    mediaRecorder.start();
-
-    recState = "recording";
-    recElapsed = 0; recTime.textContent = "00:00";
-    startRecTimer();
-    setRecUI();
-    recWarn.classList.remove("show");
-
-    // Sincronizza con la presentazione: riparti dalla slide 1 e avvia lo scorrimento
-    goTo(0);
-    setPlaying(true);
-  }
-
-  function pauseResumeRecording(){
-    if(!mediaRecorder) return;
-    if(recState === "recording"){
-      mediaRecorder.pause();
-      recState = "paused";
-      setPlaying(false);           // ferma anche le slide, restano sincronizzate
-    }else if(recState === "paused"){
-      mediaRecorder.resume();
-      recState = "recording";
-      recLast = performance.now();
-      setPlaying(true);
-    }
-    setRecUI();
-  }
-
-  function stopRecording(){
-    if(mediaRecorder && recState !== "idle"){
-      try{ mediaRecorder.stop(); }catch(_){}
-    }
-    if(stream){ stream.getTracks().forEach(t=>t.stop()); stream = null; }
-    recState = "idle";
-    setPlaying(false);             // sospendi le slide alla fine della registrazione
-    setRecUI();
-  }
-
-  function finalizeRecording(){
-    cancelAnimationFrame(recTimerId);
-    if(!chunks.length){ return; }
-    const type = (mediaRecorder && mediaRecorder.mimeType) || chunks[0].type || "audio/webm";
-    const blob = new Blob(chunks, {type});
-    currentUrl = URL.createObjectURL(blob);
-
-    audioEl.src = currentUrl;
-    const ext = type.indexOf("mp4")>-1 ? "m4a" : (type.indexOf("ogg")>-1 ? "ogg" : "webm");
-    downloadBtn.setAttribute("href", currentUrl);
-    downloadBtn.setAttribute("download", "narrazione-terracini."+ext);
-    downloadBtn.setAttribute("aria-disabled","false");
-    playback.classList.add("show");
-    recStatus.textContent = "Registrazione pronta ("+fmt(recElapsed)+")";
-  }
-
-  function revokeUrl(){
-    if(currentUrl){ URL.revokeObjectURL(currentUrl); currentUrl = null; }
-  }
-
-  function clearRecording(){
-    revokeUrl();
-    audioEl.removeAttribute("src"); audioEl.load();
-    downloadBtn.setAttribute("aria-disabled","true");
-    downloadBtn.removeAttribute("href");
-    playback.classList.remove("show");
-    recElapsed = 0; recTime.textContent = "00:00";
-    recStatus.textContent = "Pronto";
-  }
-
-  // Blocca il download quando disabilitato
-  downloadBtn.addEventListener("click", (e)=>{
-    if(downloadBtn.getAttribute("aria-disabled") === "true") e.preventDefault();
-  });
-
-  recBtn.addEventListener("click", startRecording);
-  pauseRecBtn.addEventListener("click", pauseResumeRecording);
-  stopRecBtn.addEventListener("click", stopRecording);
-  clearBtn.addEventListener("click", clearRecording);
-  window.addEventListener("beforeunload", revokeUrl);
-
-  setRecUI();
-})();
-</script>
+  })();
+  </script>
 </body>
 </html>
